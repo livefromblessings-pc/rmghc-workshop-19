@@ -17,7 +17,7 @@ log.info "\n"
 annotation = Channel.fromPath("/home/livefromblessings-pc/workshop/annotation/*")
 genome = Channel.fromPath("/home/livefromblessings-pc/workshop/genome/*")
 sample_info_for_de = Channel.fromPath("/home/livefromblessings-pc/workshop/sample_info/*")
-index = Channel.fromPath("/home/livefromblessings/workshop/index")
+index = Channel.fromPath("/home/livefromblessings-pc/workshop/index")
 reads = Channel.fromFilePairs(params.reads, size: -1)
   .ifEmpty { error "Can't find any reads matching: ${params.reads}" }
   .into {
