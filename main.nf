@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 params.name             = "RNA-seq"
 params.email            = "blessing.sokoya@colorado.edu"
-params.reads            = "/home/livefromblessings-pc/workshop/fasta/*{*_R1,*_R2}.fastq.gz"
+params.reads            = "/home/livefromblessings-pc/workshop/fastq/*{*_R1,*_R2}.fastq.gz"
 
 
 
@@ -274,5 +274,24 @@ process multiqc {
     ${counts} \
     --title '${params.name}' \
     --cl_config "extra_fn_clean_exts: [ '_1', '_2' ]"
+  """
+}
+
+process differential_expression {
+
+  publishDir "reports"
+
+  input:
+  file annotation from annotation_for_de
+  file salmon from salmon_for_de.collect()
+  file sample_info from sample_info_for_de
+
+  output:
+  file "*.html"
+
+  script:
+  """
+  cp ${baseDir}/bin/*.R* .
+  Rscript -e 'rmarkdown::render("differential_expression.Rmd", params = list(annotation_file = "${annotation}"))'
   """
 }
